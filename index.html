@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Airbnb Listings</title>
+  <link rel="icon" type="image/png" href="/logo/logo.jpeg">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 20px;
+      background-color: #f8f9fa;
+    }
+    h1 {
+      text-align: center;
+      color: #343a40;
+    }
+    .button {
+      display: block;
+      margin: 20px auto;
+      padding: 10px 20px;
+      background-color: #007bff;
+      color: #fff;
+      text-decoration: none;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .button:hover {
+      background-color: #0056b3;
+    }
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    .result {
+      margin-top: 20px;
+      padding: 20px;
+      background-color: #f0f0f0;
+      border-radius: 5px;
+      box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+      white-space: pre-wrap;
+    }
+    .error {
+      color: red;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <h1>Airbnb Listings</h1>
+  <div class="container">
+    <button class="button" onclick="fetchData(statusUrl)">Fetch Status</button>
+    <button class="button" onclick="fetchData(availabilityUrl)">Fetch Availability</button>
+    <button class="button" onclick="fetchData(pricesUrl)">Fetch Prices</button>
+    <div id="result" class="result"></div>
+  </div>
+
+  <script>
+    const availabilityUrl = 'https://airbnb-listings.p.rapidapi.com/v2/listingAvailabilityFull?id=619966061834034729';
+    const pricesUrl = 'https://airbnb-listings.p.rapidapi.com/v2/listingPricesFull?id=619966061834034729';
+    const statusUrl = 'https://airbnb-listings.p.rapidapi.com/v2/listingstatus?id=619966061834034729&year=2024&month=1';
+
+    const options = {
+      method: 'GET',
+      headers: {
+        'X-RapidAPI-Key': 'dc875906aamsh1e48a1af60805cbp1cdc4cjsnb237ae737ac3',
+        'X-RapidAPI-Host': 'airbnb-listings.p.rapidapi.com'
+      }
+    };
+
+    async function fetchData(url) {
+      try {
+        const response = await fetch(url, options);
+        const result = await response.text();
+        const data = JSON.parse(result);
+        document.getElementById('result').innerHTML = JSON.stringify(data, null, 2);
+      } catch (error) {
+        document.getElementById('result').innerHTML = `<div class="error">Error: ${error.message}</div>`;
+      }
+    }
+  </script>
+</body>
+</html>
